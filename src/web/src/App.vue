@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-bind:app="hasSidebar"
       permanent
       :expand-on-hover="hasSidebarClosable"
@@ -25,15 +25,17 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
 
     <v-app-bar
+      elevation="2"
       app
       color="#fff"
       flat
       height="70"
-      style="left: 0; border-bottom: 3px #f3b228 solid"
     >
+    <div class="header-container">
+      <v-row align-content="space-between">
       <!-- <v-icon color="#f3b228" class="mr-5">{{ applicationIcon }}</v-icon> -->
       <img src="/yukon.svg" style="margin: -8px 155px 0 0" height="44" />
       <v-toolbar-title>
@@ -65,6 +67,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon color="primary" v-bind="attrs" v-on="on">
               <v-icon>mdi-dots-vertical</v-icon>
+              <a>Menu</a>
             </v-btn>
           </template>
 
@@ -88,20 +91,47 @@
       <div v-else>
         <router-link to="/sign-in">Sign in</router-link>
       </div>
-
+    </v-row>
+    </div>
       <!-- <v-app-bar-nav-icon @click.stop="drawerRight = !drawerRight"></v-app-bar-nav-icon> -->
     </v-app-bar>
 
     <v-main v-bind:style="{ 'padding-left: 33px !important': !hasSidebar }">
       <!-- Provides the application the proper gutter -->
-      <v-container fluid>
-        <v-row>
+      <v-container fluid id="container-main">
+        <v-row id="container-row">
           <v-col>
             <router-view></router-view>
           </v-col>
         </v-row>
       </v-container>
     </v-main>
+
+    <div class="container text-center">
+      <img src="/Aurora-mini.svg" style="margin: 5% 0px 3% 0px" height="44" />
+    </div>
+
+      <v-footer
+        flat
+        style="z-index: 10"
+        padless
+        height="70"
+      >
+        <v-card
+          class="flex"
+          flat
+          tile
+        >
+          <v-card-title  id="footer-bg">
+            <img src="/logo-white.svg" style="margin: -8px 155px 0 0" height="44"/>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="white--text text-center footer-details">
+            <span>© Copyright {{ new Date().getFullYear() }} <a href="/">Government of Yukon</a></span>
+          </v-card-text>
+        </v-card>
+      </v-footer>
+
   </v-app>
 </template>
 
@@ -169,3 +199,24 @@ export default {
   }
 };
 </script>
+
+<style>
+  .v-toolbar--flat {
+  box-shadow: 1px 0px 7px 4px rgba(0,0,0,0.24) !important;
+  -webkit-box-shadow: 1px 0px 7px 4px rgba(0,0,0,0.24) !important;
+  -moz-box-shadow: 1px 0px 7px 4px rgba(0,0,0,0.24) !important;
+  }
+
+  .header-container{
+    width: 100%;
+    margin: 0 auto;
+    padding: 12px 24px;
+  }
+
+  @media (min-width:1180px){
+    .header-container {
+      width:1180px;
+    }
+  }
+
+</style>
