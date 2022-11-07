@@ -1,6 +1,6 @@
 <template>
   <div class="books">
-    <div class="full-width pt-16 mt-n5" >
+    <div class="full-width yellow-border white-bg pt-16 mt-n5" >
     <v-container 
     class="contentt"
     >
@@ -31,6 +31,7 @@
           v-model="search"
           class="pl-5 pr-5"
           dense=""
+          
           background-color="#F1F1F1"
           outlined="outlined"
           flat=""
@@ -38,17 +39,10 @@
           color=""
           solo
         >
-          <template v-slot:no-data >
-            <v-list-item v-for='(items, index) in item'>
-              <a
-              :src="generateDep(index, 'dep')">
-                {{index}}
-              </a>
-            </v-list-item>
-          </template>
       </v-select>
         <v-btn
-          class="mt-n3 pa-4 py-5"
+        class="search-responsive mt-n3 pa-4 py-5"
+          style="display: flex;"
           color="#00616D"
         >Search</v-btn>
       </v-row>
@@ -57,7 +51,7 @@
     <div class="d-flex mb-6 mt-6">
       <a class="mr-2" href="/">Home</a>
       <p class="mr-2">/</p>
-      <p>Browse employees by organization</p>
+      <p>Find a goverment Employee</p>
     </div>
     <div class="text-center loading" v-show="loading">
         <v-progress-circular
@@ -66,11 +60,10 @@
         indeterminate
         ></v-progress-circular>
     </div>
-
     <v-row class="mb-6 mt-16">
         <v-col
         md="4"
-        v-for='(items, index) in item'
+        v-for='(items, index, id) in item'
         >
           <v-hover v-slot="{ hover }">
             <v-card
@@ -96,8 +89,10 @@
                         >
                         mdi-domain
                         </v-icon> -->
-                        <v-avatar>
-                          <img
+                        <v-avatar
+                        tile
+                        >
+                          <img style="filter:invert()"
                             :src="require('../assets/svg/' + generateUrlImg(index, 'dep'))"
                           >
                         </v-avatar>
@@ -118,7 +113,7 @@
                   <v-expand-transition>
                     <ul v-if="hover">
                         <li v-for='detail in items'>
-                            <a class="divisions-text" v-bind:src="generateUrl(detail, 'div')">{{detail.division}}</a>
+                            <a class="divisions-text" :href="searchUrl(detail, 'dep')" v-bind:src="generateUrl(detail, 'div')">{{detail.division}}</a>
                         </li>
                     </ul>
                   </v-expand-transition>
@@ -176,16 +171,17 @@ export default {
         else if(type == "dep")
             return "/organization-detail/"+field;
     },
-    generateDep(field, type){
-        if(type == 'dep'){
-          return field;
-        } else {
-          return 0;
-        }  
+    ejecuteSearch(){
+      this.search = searchUrl();
     },
+    searchUrl(field, type){
+        if(type == "dep")
+          return `/find-employee/${field.departmentUrl}/${field.divisionUrl}`;  
+    },
+
     generateUrlImg(field, type){
         if(type == "dep") {
-          let department = field+'.png';
+          let department = field+'.svg';
           const noSpaces = department.replaceAll(/\s/g,'');
           return String(noSpaces);
         } else {
@@ -208,56 +204,12 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+        
     },
   },
 };
 </script>
 
 <style scoped>
-.flex-end{
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  align-content: center;
-}
- .v-text-field >>> fieldset {
-  border: 1.5px solid #F3A901;
-}
-.index-text{
-  text-decoration: underline;
-  color: #000000 !important;
-}
 
-.divisions-text {
-  color: #0097A9 !important;
-  font-size: 16px !important;
-  font-weight: 100 !important;
-  text-decoration: underline;
-}
-.v-banner span {
-  font-weight: 700;
-}
-
-.full-width{
-  width: 110%;
-  margin-left: -5%;
-  border-bottom:3px #f3b228 solid;
-  background-color: white;
-}
-@media (min-width: 1180px){
-  .full-width{
-  width: 500%;
-  margin-left: -200%;
-  
-}
-
-  .contentt {
-    width: 1180px !important;
-  }
-}
-
-.contentt {
-  width:92%;
-  padding: 12px 24px;
-}
 </style>
